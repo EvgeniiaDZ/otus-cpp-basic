@@ -1,2 +1,2 @@
 # otus-cpp-basic
-Repository for otus learning projects.
+New branch test2 is created.
