@@ -27,11 +27,28 @@ int argument_check_parameter_value(int argc, char** argv, int& value) {
     return 0;
 }
 
+int define_target_value_by_game_level(const int& level, int& value) {
+    if (level == 1) {
+        value = 10;
+    }
+    else if (level == 2) {
+        value = 50;
+    }
+    else if (level == 3) {
+        value = 100;
+    }
+    else {
+        std::cout << "Error! Invalid parameter argument. Should be in the range of 1 to 3." << std::endl; 
+        return -1;            
+    }
+    return 0;
+}
+
 
 int main (int argc, char** argv) {
 
     int target_value_max = 100;  // By default target max value is 100.
-
+    int game_level = 0;
     // Check input parameters.
 	if (argc >= 2) {
         std::string arg1_value{ argv[1] };
@@ -39,7 +56,15 @@ int main (int argc, char** argv) {
             if (argument_check_parameter_value(argc, argv, target_value_max) != 0) {
                 return -1;
             }
-        }        
+        }      
+        else if (arg1_value == "-level") {
+            if (argument_check_parameter_value(argc, argv, game_level) != 0) {
+                return -1;
+            }
+            if (define_target_value_by_game_level(game_level, target_value_max) != 0) {
+                return -1;
+            }
+        }  
         else if (arg1_value == "-table") {
             if (argc > 2) {
                 std::cout << "Too much arguments!" << std::endl;
