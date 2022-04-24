@@ -40,6 +40,14 @@ int main (int argc, char** argv) {
                 return -1;
             }
         }        
+        else if (arg1_value == "-table") {
+            if (argc > 2) {
+                std::cout << "Too much arguments!" << std::endl;
+                return -1;
+            }   
+            high_scores_print(); 
+            return 0; 
+        }
         else {
             std::cout << "Error! Invalid Parameter: " << "\'" <<argv[1] << "\'" << std::endl;
             return -1;
