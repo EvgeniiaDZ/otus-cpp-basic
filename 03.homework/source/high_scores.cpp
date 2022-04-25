@@ -1,6 +1,7 @@
 #include "high_scores.h"
 #include <iostream>
 #include <fstream>
+#include <map>
 
 const std::string high_scores_filename = "high_scores.txt";
 
@@ -34,6 +35,7 @@ int high_scores_print () {
 
 	std::cout << "High scores table:" << std::endl;
 
+	std::map <std::string, int> score_table;
 	std::string username;
 	int high_score = 0;
 	while (true) {
@@ -48,9 +50,19 @@ int high_scores_print () {
 			break;
 		}
 
-		// Print the information to the screen
-		std::cout << username << '\t' << high_score << std::endl;
+		auto it = score_table.find(username);
+		if (it != score_table.end()) {
+			if (it->second > high_score) {
+				score_table[username] = high_score; 
+			}
+		}
+		else {
+			score_table[username] = high_score;
+		}
 	}
 	in_file.close();
+	for (auto it = score_table.begin(); it != score_table.end(); ++it) {
+		std::cout << it->first << '\t' << it->second << std::endl;
+	}
 	return 0;
 }
