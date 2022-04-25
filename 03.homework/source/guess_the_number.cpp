@@ -100,6 +100,6 @@ int main (int argc, char** argv) {
     if (high_scores_print() != 0) {
         return -1;
     }        
-    
+
     return 0;
 }

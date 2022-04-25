@@ -7,20 +7,45 @@ const std::string high_scores_filename = "high_scores.txt";
 
 
 int high_scores_add (std::string user_name, int attempts_count) {
-    // We should open the output file in the append mode - we don't want
-	// to erase previous results.
-	std::ofstream out_file{high_scores_filename, std::ios_base::app};
-	if (!out_file.is_open()) {
+    // We should open the output file to use position cursor
+	std::fstream file{high_scores_filename, std::fstream::in | std::fstream::out \
+	 | std::ios_base::in | std::ios_base::out};
+	
+	if (!file.is_open()) {
 		std::cout << "Failed to open file for write: " << high_scores_filename << "!" << std::endl;
 		return -1;
+	}	
+
+	std::string user_name_f;
+	int high_score = 0;	
+	bool is_change_score = false;
+	while (true) {
+		auto cur_pos = file.tellg();
+		// Read the username first
+		file >> user_name_f;
+		// Read the high score next
+		file >> high_score;
+		// Ignore the end of line symbol
+		file.ignore();
+		if (file.fail()) {
+			break;
+		}
+		// If there is such user name and new score is better, it should be overwritten
+		if (user_name_f == user_name) {
+			if (attempts_count < high_score) {
+				file.seekp(cur_pos);
+				file << user_name << ' ' << attempts_count << std::endl;
+			}			
+			is_change_score = true;
+			break;
+		}
 	}
-
-	// Append new results to the table:
-	out_file << user_name << ' ';
-	out_file << attempts_count;
-	out_file << std::endl;
-
-	out_file.close();
+	// If there are no such user name add new score
+	if (is_change_score == false) {
+		file.clear();
+		file << user_name << ' ' << attempts_count << std::endl;
+	}
+	file.close();
 	return 0;
 }
 
@@ -34,8 +59,6 @@ int high_scores_print () {
 	}
 
 	std::cout << "High scores table:" << std::endl;
-
-	std::map <std::string, int> score_table;
 	std::string username;
 	int high_score = 0;
 	while (true) {
@@ -50,19 +73,9 @@ int high_scores_print () {
 			break;
 		}
 
-		auto it = score_table.find(username);
-		if (it != score_table.end()) {
-			if (it->second > high_score) {
-				score_table[username] = high_score; 
-			}
-		}
-		else {
-			score_table[username] = high_score;
-		}
+		// Print the information to the screen
+		std::cout << username << '\t' << high_score << std::endl;
 	}
 	in_file.close();
-	for (auto it = score_table.begin(); it != score_table.end(); ++it) {
-		std::cout << it->first << '\t' << it->second << std::endl;
-	}
 	return 0;
 }
