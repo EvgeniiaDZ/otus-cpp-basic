@@ -27,6 +27,10 @@ class Parser {
 
     ASTNode *prim();
 
+    ASTNode *check_prim();
+
+    ASTNode *check_term();
+
     Lexer &lexer_;
     Lexer::Token tok_;
 };

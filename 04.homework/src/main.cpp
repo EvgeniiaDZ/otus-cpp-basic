@@ -21,9 +21,15 @@ int main() {
     Lexer lexer(std::cin);
     Parser parser(lexer);
 
-    ASTNode *ast = parser.parse();
-    if (ast) {
-         ast->print(std::cout);
+    try {
+        ASTNode *ast = parser.parse();
+        if (ast) {
+            ast->print(std::cout);
+        }
+    }
+    catch(const char *error) {
+        std::cout << "Error :" << error << std::endl;
+        return -1;
     }
 
     return 0;
