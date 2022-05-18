@@ -6,17 +6,12 @@
 
 class Variable : public ASTNode {
     public:
-        Variable(std::string name)
-            : ASTNode(name)
-            , name_(name) {}
-
+        explicit Variable(std::string name);
         Variable(const Variable &other) = delete;
-
         Variable &operator=(const Variable &other) = delete;
+        ~Variable();
 
-        ~Variable() {}
-
-        std::string name() const { return name_; }
+        std::string name() const;
 
     private:
         std::string name_;

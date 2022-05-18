@@ -6,17 +6,13 @@
 
 class Add : public ASTNode {
     public:
-        Add(ASTNode * lhs, ASTNode * rhs)
-            : ASTNode( "+", lhs, rhs )
-            , repr_("+") {}
-
+        Add(ASTNode *lhs, ASTNode *rhs);
         Add(const Add &other) = delete;
-
         Add &operator=(const Add &other) = delete;
+        ~Add();
 
-        ~Add() {}
+        std::string repr() const;
 
-        std::string repr() const { return repr_; }
     private:
         std::string repr_;
 };

@@ -19,7 +19,7 @@ class ASTNode {
 
     ~ASTNode();
 
-    std::string repr() const { return repr_; }
+    std::string repr() const;
 
     void print(std::ostream &out) const;
 

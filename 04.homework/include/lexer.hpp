@@ -25,11 +25,11 @@ class Lexer {
 
     Token next_token();
 
-    int get_number() const { return number_; }
+    int get_number() const;
 
-    std::string get_operator() const { return operator_; }
+    std::string get_operator() const;
 
-    std::string get_name() const { return name_; }
+    std::string get_name() const;
 
   protected:
     bool isbrace(char ch) const;
@@ -53,23 +53,3 @@ class Lexer {
     char ch_;
     std::istream &in_;
 };
-
-inline Lexer::Lexer(std::istream &in)
-    : state_(State::Empty)
-    , number_(0)
-    , in_(in) {
-    next_char();
-}
-
-inline char Lexer::next_char() {
-    in_.get(ch_);
-    return ch_;
-}
-
-inline bool Lexer::end() const { return in_.eof() || ch_ == '\n'; }
-
-inline bool Lexer::isbrace(char ch) const { return ch == '(' || ch == ')'; }
-
-inline bool Lexer::isoperator(char ch) const {
-    return ch == '+' || ch == '-' || ch == '*' || ch == '/';
-}

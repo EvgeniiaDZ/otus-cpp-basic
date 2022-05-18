@@ -8,6 +8,9 @@
 
 using Token = Lexer::Token;
 
+Parser::Parser(Lexer &lexer)
+    : lexer_(lexer) {}
+
 ASTNode *Parser::parse() { return expr(); }
 
 void Parser::next_token() { tok_ = lexer_.next_token(); }
@@ -48,7 +51,7 @@ ASTNode *Parser::expr() {
                 try { 
                     root = new Sub(root, check_term());
                 }
-            catch(const char *error) {
+                catch(const char *error) {
                     throw error;
                 }
                 break;

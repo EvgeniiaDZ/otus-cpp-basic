@@ -6,17 +6,13 @@
 
 class Sub : public ASTNode {
     public:
-        Sub(ASTNode * lhs, ASTNode * rhs) 
-            : ASTNode("-", lhs, rhs)
-            , repr_("-") {}
-
+        Sub(ASTNode *lhs, ASTNode *rhs);
         Sub(const Sub &other) = delete;
-
         Sub &operator=(const Sub &other) = delete;
+        ~Sub();
 
-        ~Sub() {}
-
-        std::string repr() const { return repr_; }
+        std::string repr() const;
+        
     private:
         std::string repr_;
 };

@@ -6,17 +6,12 @@
 
 class Div : public ASTNode {
     public:
-        Div(ASTNode * lhs, ASTNode * rhs)
-            : ASTNode( "/", lhs, rhs)
-            , repr_("/") {}
-
+        Div(ASTNode *lhs, ASTNode *rhs);        
         Div(const Div &other) = delete;
-
         Div &operator=(const Div &other) = delete;
+        ~Div();
 
-        ~Div() {}
-
-        std::string repr() const { return repr_; }
+        std::string repr() const;
     
     private:
         std::string repr_;

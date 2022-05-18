@@ -6,17 +6,12 @@
 
 class Number : public ASTNode {
   public:
-    Number(int val)
-        : ASTNode(std::to_string(val))
-        , val_(val) {}
-
+    explicit Number(int val);
     Number(const Number &other) = delete;
-
     Number &operator=(const Number &other) = delete;
+    ~Number();
 
-    ~Number() {}
-
-    int value() const { return val_; }
+    int value() const;
 
   private:
     int val_;

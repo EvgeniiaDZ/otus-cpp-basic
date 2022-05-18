@@ -5,6 +5,15 @@
 
 #include <cctype>
 
+
+Lexer::Lexer(std::istream &in)
+    : state_(State::Empty)
+    , number_(0)
+    , in_(in) {
+    next_char();
+}
+
+
 Lexer::Token Lexer::next_token() {
     for (;;) {
         switch (state_) {
@@ -71,4 +80,30 @@ Lexer::Token Lexer::next_token() {
             }
         }
     }
+}
+
+
+int Lexer::get_number() const { return number_; }
+
+
+std::string Lexer::get_operator() const {return operator_; }
+
+
+std::string Lexer::get_name() const { return name_; }
+
+
+char Lexer::next_char() {
+    in_.get(ch_);
+    return ch_;
+}
+
+
+bool Lexer::end() const { return in_.eof() || ch_ == '\n'; }
+
+
+bool Lexer::isbrace(char ch) const { return ch == '(' || ch == ')'; }
+
+
+bool Lexer::isoperator(char ch) const {
+    return ch == '+' || ch == '-' || ch == '*' || ch == '/';
 }

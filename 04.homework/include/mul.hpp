@@ -6,19 +6,13 @@
 
 class Mul : public ASTNode {
     public:
-        Mul(ASTNode * lhs, ASTNode * rhs)
-            : ASTNode("*", lhs, rhs)
-            , repr_("*") {}
-
+        Mul(ASTNode *lhs, ASTNode *rhs);
         Mul(const Mul &other) = delete;
-
         Mul &operator=(const Mul &other) = delete;
+        ~Mul();
 
-        ~Mul() {}
+        std::string repr() const;
 
-        std::string repr() const { return repr_; }
-
-    private:
-  
+    private:  
         std::string repr_;
 };

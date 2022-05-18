@@ -7,8 +7,7 @@
 
 class Parser {
   public:
-    explicit Parser(Lexer &lexer)
-        : lexer_(lexer) {}
+    explicit Parser(Lexer &lexer);
 
     Parser(const Parser &other) = delete;
 

@@ -15,6 +15,8 @@ ASTNode::~ASTNode() {
     delete rhs_;
 }
 
+std::string ASTNode::repr() const { return repr_; }
+
 void ASTNode::print(std::ostream &out) const { inner_print(out, 0); }
 
 void ASTNode::inner_print(std::ostream &out, size_t indent) const {
