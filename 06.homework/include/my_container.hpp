@@ -8,7 +8,9 @@ class MyContainer : public IContainer<T> {
 public:
     MyContainer() 
         : _data( nullptr )
-        , _size( 0 ) {}
+        , _size( 0 )
+        , _size_coef( 1.5 )
+        , _capacity( 0 ) {}
 
     explicit MyContainer( const int& size )
         : _size( size ) 
@@ -28,6 +30,8 @@ public:
         {
             _data[i] = other[i];
         }
+        _capacity = other._capacity;
+        _size_coef = other._size_coef;
     }
 
     MyContainer& operator=( const MyContainer& other )
@@ -40,6 +44,8 @@ public:
             {
                 _data[i] = other[i];
             }
+            _capacity = other._capacity;
+            _size_coef = other._size_coef;
         }
         return *this;
     }
@@ -51,35 +57,50 @@ public:
 
     void push_back( const T& val ) override 
     {
-        T* temp = new T[_size + 1];
-        for( int i = 0; i < _size; i++ ) 
+        if( _size >= _capacity )
         {
-            temp[i] = _data[i];
-        }
-        delete [] _data;
-        _data = temp;
-        _data[_size] = val;
-        ++_size;
+            _capacity = ( _size == 0 ) ? ( 1 ) : ( _size * _size_coef );
+            T* temp = new T[_capacity];
+            for( int i = 0; i < _size; i++ ) 
+            {
+                temp[i] = _data[i];
+            }
+            delete [] _data;
+            _data = temp;
+        }            
+        _data[_size++] = val;        
     }
 
     int insert( const int& idx, const T& val ) override 
     {
-		if( idx > _size )
-		{
-			return -1;
-		}
-
-        T* temp = new T[_size + 1];
-        int pos = 0;
-        for( int i = 0; i < _size; i++ ) 
+        
+        if( idx > _size )
         {
-            ( i < idx ) ? ( pos = i ) : ( pos = i + 1 ) ;
-            temp[pos] = _data[i];
+            return -1;
         }
-        delete [] _data;
-        _data = temp;
-		++_size;
+        if( _size < _capacity )
+        {
+            for( int i = idx + 1; i < _size; i++ )
+            {
+                _data[i] = _data[i - 1];
+            }
+        }
+        else 
+        {
+            _capacity = ( _size == 0 ) ? ( 1 ) : ( _size * _size_coef );
+            T* temp = new T[_capacity];
+            int pos = 0;
+            for( int i = 0; i < _size; i++ ) 
+            {
+                ( i < idx ) ? ( pos = i ) : ( pos = i + 1 ) ;
+                temp[pos] = _data[i];
+            }
+            delete [] _data;
+            _data = temp;
+        }
         _data[idx] = val;
+        ++_size;
+
         return 0;
     }
 
@@ -110,4 +131,6 @@ public:
 private:
     T* _data;
     int _size;
+    float _size_coef;
+    int _capacity; 
 };
