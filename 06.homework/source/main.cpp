@@ -1,6 +1,7 @@
 #include "icontainer.hpp"
 #include "my_container.hpp"
 #include "my_list.hpp"
+#include "my_forward_list.hpp"
 
 #include <iostream>
 
@@ -63,4 +64,13 @@ int main()
     std::cout << "container copy: " << container_l_copy << std::endl;
     MyList<int> container_l_copy_2 = MyList<int>(container_l);
     std::cout << "container copy 2: " << container_l_copy_2 << std::endl;  
+
+    std::cout << "Forward list container" << std::endl;
+    MyForwardList<int> container_fl = MyForwardList<int>();
+    ContainerFillInitial( container_fl );
+    TestContainer( container_fl );     
+    MyForwardList<int> container_fl_copy = container_fl;
+    std::cout << "container copy: " << container_fl_copy << std::endl;
+    MyForwardList<int> container_fl_copy_2 = MyForwardList<int>(container_fl);
+    std::cout << "container copy 2: " << container_fl_copy_2 << std::endl;  
 }
