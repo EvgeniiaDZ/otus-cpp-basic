@@ -1,6 +1,7 @@
 #pragma once
 
 #include "icontainer.hpp"
+#include <utility>
 
 template <typename T>
 class MyList : public IContainer<T> 
@@ -20,17 +21,28 @@ public:
         }
     }
 
-    MyList& operator=( const MyList& other )
+    MyList( MyList&& other )
     {
-        if( this != other )
+        _node_last = other._node_last;
+        _size = other._size;
+        other._node_last = nullptr;
+        other._size = 0;
+    }
+
+    MyList& operator=( const MyList& rhs )
+    {
+        if( this != rhs )
         {
-            init_value();
-            for( int i = 0; i < other.size(); i++ )
-            {
-                this->push_back( other[i] );
-            }
+            MyList temp{rhs};
+            *this = temp;
         }
         return *this;
+    }
+
+    MyList& operator=( MyList&& rhs )
+    {
+        MyList temp{std::move( rhs )};
+        return *this = temp;
     }
 
     ~MyList() override

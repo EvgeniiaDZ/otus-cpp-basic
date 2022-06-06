@@ -1,6 +1,7 @@
 #pragma once
 
 #include "icontainer.hpp"
+#include <utility>
 
 template <typename T>
 class MyForwardList : public IContainer<T>
@@ -20,17 +21,30 @@ public:
         }
     }
 
-    MyForwardList& operator=( const MyForwardList& other )
+    MyForwardList( MyForwardList&& other )
     {
-        if( this != other )
+        _node_first = other._node_first;
+        other._node_first = nullptr;
+        _node_last = other._node_last;
+        other._node_last = nullptr;
+        _size = other._size;
+        other._size = 0;
+    }
+
+    MyForwardList& operator=( const MyForwardList& rhs )
+    {
+        if( this != rhs )
         {
-            init_value();
-            for( int i = 0; i < other.size(); i++ )
-            {
-                this->push_back( other[i] );
-            }
+            MyForwardList temp{rhs};
+            *this = temp;
         }
         return *this;
+    }
+
+    MyForwardList& operator=( MyForwardList&& rhs )
+    {
+        MyForwardList temp{std::move( rhs )};
+        return * this = temp;
     }
 
     ~MyForwardList() override

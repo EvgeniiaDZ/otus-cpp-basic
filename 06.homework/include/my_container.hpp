@@ -1,7 +1,7 @@
 #pragma once
 
 #include "icontainer.hpp"
-
+#include <utility>
 
 template <typename T>
 class MyContainer : public IContainer<T> {
@@ -34,20 +34,31 @@ public:
         _size_coef = other._size_coef;
     }
 
-    MyContainer& operator=( const MyContainer& other )
+    MyContainer( MyContainer&& other )
     {
-        if( this != other )
+        _data = other._data;
+        other._data = nullptr;
+        _size = other._size;
+        other._size = 0;
+        _size_coef = other._size_coef;
+        _capacity = other._capacity;
+        other._capacity = 0; 
+    }
+
+    MyContainer& operator=( const MyContainer& rhs )
+    {
+        if( this != rhs )
         {
-            _size = other.size();
-            _data = new T[_size];
-            for( int i = 0; i < _size; i++ )
-            {
-                _data[i] = other[i];
-            }
-            _capacity = other._capacity;
-            _size_coef = other._size_coef;
+            MyContainer temp{rhs};
+            *this = temp;
         }
         return *this;
+    }
+
+    MyContainer& operator=( MyContainer&& rhs )
+    {
+        MyContainer temp{std::move( rhs )};
+        return *this = temp;
     }
 
     ~MyContainer() override 
