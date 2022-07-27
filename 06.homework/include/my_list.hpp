@@ -47,12 +47,9 @@ public:
 
     ~MyList() override
     {
-        Node* node = get_node( 0 );
-        while( node->next != nullptr )
+        while( _size )
         {
-            delete [] node;
-            _size--;
-            node = get_node( 0 );
+            erase( --_size );
         }
     }
 
