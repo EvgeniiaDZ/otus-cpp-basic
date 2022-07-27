@@ -2,6 +2,7 @@
 
 #include "icontainer.hpp"
 #include <utility>
+#include "cmath"
 
 template <typename T>
 class MyContainer : public IContainer<T> {
@@ -70,7 +71,7 @@ public:
     {
         if( _size >= _capacity )
         {
-            _capacity = ( _size == 0 ) ? ( 1 ) : ( _size * _size_coef );
+            _capacity = static_cast<int>( ceil( ( _size == 0 ) ? ( 1 ) : ( _size * _size_coef ) ) );
             T* temp = new T[_capacity];
             for( int i = 0; i < _size; i++ ) 
             {
@@ -98,7 +99,7 @@ public:
         }
         else 
         {
-            _capacity = ( _size == 0 ) ? ( 1 ) : ( _size * _size_coef );
+            _capacity = static_cast<int>( ceil( ( _size == 0 ) ? ( 1 ) : ( _size * _size_coef ) ) );
             T* temp = new T[_capacity];
             int pos = 0;
             for( int i = 0; i < _size; i++ ) 
