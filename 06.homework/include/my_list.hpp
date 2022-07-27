@@ -132,12 +132,51 @@ public:
         return idx_node->data;
     } 
 
-private:
-    struct Node {
+    struct Node 
+    {
         Node* next;
         Node* prev;
         T data;
     };
+
+    template <typename T>
+    class Iterator 
+    {
+    public:
+        Iterator() noexcept
+            : _node( nullptr ) {}
+        Iterator( struct Node* node ) noexcept
+            : _node( node ) {}
+        Iterator& operator++()
+        {
+            _node = _node->next;
+            return *this;
+        }
+        bool operator!= ( const Iterator& iterator ) const
+        {
+            return _node != iterator._node;
+        }
+        T& operator*()
+        {
+            return _node->data;
+        }
+
+    private:
+        struct Node* _node;
+    };
+
+    Iterator<T> begin()
+    {
+        return Iterator<T>( get_node(0) );
+    }
+
+    Iterator<T> end()
+    {
+        return Iterator<T>( _node_last );
+    }
+
+private:
+
     Node* _node_last;
     int _size;
 

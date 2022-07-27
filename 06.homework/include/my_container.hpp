@@ -139,6 +139,42 @@ public:
     {
         return _data[idx];
     }
+    
+    template <typename T>
+    class Iterator {
+    public: 
+        Iterator() noexcept { _itr_ptr = nullptr; }
+        Iterator( T* itr_ptr ) noexcept { _itr_ptr = itr_ptr; }    
+
+        Iterator& operator++() 
+        {
+            ++_itr_ptr;
+            return *this;
+        }
+
+        bool operator!=( const Iterator& iterator ) const
+        {
+            return _itr_ptr != iterator._itr_ptr;
+        }
+
+        T& operator*()
+        {
+            return *_itr_ptr;
+        }
+
+    private:
+        T* _itr_ptr;
+    };
+
+    Iterator<T> begin() 
+    {
+        return Iterator<T>( _data );
+    }
+
+    Iterator<T> end() 
+    {
+        return  Iterator<T>( _data + _size ); 
+    }
 
 private:
     T* _data;

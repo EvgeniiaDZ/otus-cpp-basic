@@ -24,6 +24,18 @@ std::ostream& operator<< (std::ostream& os, const IContainer<T>& cont)
     return os;
 }
 
+template <class InpItr>
+void TestContainerIterator( const InpItr& itr_begin, const InpItr& itr_end )
+{
+    std::cout << "Test container iterator" << std::endl;
+    auto itr = itr_begin;
+    for( ; itr != itr_end; ++itr )
+    {
+        std::cout << ( *itr ) << " ";
+    }
+    std::cout << std::endl;
+}
+
 template <typename T>
 void TestContainer( IContainer<T>& container )
 {
@@ -87,6 +99,8 @@ int main()
     std::cout << "container move assignment: " << container_s_move << std::endl;  
     MyContainer<int> container_s_move_constr{get_container()};
     std::cout << "container move constructor: " << container_s_move_constr << std::endl;
+    TestContainerIterator(container_s.begin(), container_s.end());
+
 
     std::cout << "List container" << std::endl;
     MyList<int> container_l = MyList<int>();
@@ -100,7 +114,7 @@ int main()
     std::cout << "container move assignment: " << container_l_move << std::endl;  
     MyList<int> container_l_move_constr{get_list()};
     std::cout << "container move constructor: " << container_l_move_constr << std::endl;  
-    
+    TestContainerIterator(container_l_copy_2.begin(), container_l_copy_2.end());
 
 
     std::cout << "Forward list container" << std::endl;
@@ -115,4 +129,5 @@ int main()
     std::cout << "container move assignment: " << container_fl_move << std::endl;  
     MyForwardList<int> container_fl_move_constr{get_list_forward()};
     std::cout << "container move constructor: " << container_fl_move_constr << std::endl;
+    TestContainerIterator(container_fl_copy_2.begin(), container_fl_copy_2.end());
 }
