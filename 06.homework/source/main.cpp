@@ -4,6 +4,7 @@
 #include "my_forward_list.hpp"
 
 #include <iostream>
+#include <utility>
 
 template <typename T>
 void ContainerFillInitial( IContainer<T> & cont )
@@ -22,18 +23,6 @@ std::ostream& operator<< (std::ostream& os, const IContainer<T>& cont)
         os << cont[i] << ' ';    
     }
     return os;
-}
-
-template <class InpItr>
-void TestContainerIterator( const InpItr& itr_begin, const InpItr& itr_end )
-{
-    std::cout << "Test container iterator" << std::endl;
-    auto itr = itr_begin;
-    for( ; itr != itr_end; ++itr )
-    {
-        std::cout << ( *itr ) << " ";
-    }
-    std::cout << std::endl;
 }
 
 template <typename T>
@@ -57,31 +46,26 @@ void TestContainer( IContainer<T>& container )
 }
 
 
-MyList<int> get_list( void )
+template <template <typename> class Container>
+Container<int> get_container( void )
 {
-    MyList<int> list;
-    list.push_back( 10 );
-    list.push_back( 20 );
-    list.push_back( 30 );
-    return list;
-}
-
-MyContainer<int> get_container( void )
-{
-    MyContainer<int> cont;
+    Container<int> cont;
     cont.push_back( 10 );
     cont.push_back( 20 );
     cont.push_back( 30 );
     return cont;
 }
 
-MyForwardList<int> get_list_forward( void )
+template <class InpItr>
+void TestContainerIterator( const InpItr& itr_begin, const InpItr& itr_end )
 {
-    MyForwardList<int> list_f;
-    list_f.push_back( 10 );
-    list_f.push_back( 20 );
-    list_f.push_back( 30 );
-    return list_f;
+    std::cout << "Test container iterator" << std::endl;
+    auto itr = itr_begin;
+    for( ; itr != itr_end; ++itr )
+    {
+        std::cout << ( *itr ) << " ";
+    }
+    std::cout << std::endl;
 }
 
 
@@ -95,10 +79,10 @@ int main()
     std::cout << "container copy: " << container_s_copy << std::endl;
     MyContainer<int> container_s_copy_2 = MyContainer<int>(container_s);
     std::cout << "container copy 2: " << container_s_copy_2 << std::endl;
-    MyContainer<int> container_s_move = get_container();
+    MyContainer<int> container_s_move{get_container<MyContainer>()};
+    std::cout << "container move constructor: " << container_s_move << std::endl;
+    container_s_move = std::move( get_container<MyContainer>() );
     std::cout << "container move assignment: " << container_s_move << std::endl;  
-    MyContainer<int> container_s_move_constr{get_container()};
-    std::cout << "container move constructor: " << container_s_move_constr << std::endl;
     TestContainerIterator(container_s.begin(), container_s.end());
 
 
@@ -110,10 +94,10 @@ int main()
     std::cout << "container copy: " << container_l_copy << std::endl;
     MyList<int> container_l_copy_2 = MyList<int>(container_l);
     std::cout << "container copy 2: " << container_l_copy_2 << std::endl;  
-    MyList<int> container_l_move = get_list();
+    MyList<int> container_l_move{get_container<MyList>()};
+    std::cout << "container move constructor: " << container_l_move << std::endl;  
+    container_l_move = std::move( get_container<MyList>() );
     std::cout << "container move assignment: " << container_l_move << std::endl;  
-    MyList<int> container_l_move_constr{get_list()};
-    std::cout << "container move constructor: " << container_l_move_constr << std::endl;  
     TestContainerIterator(container_l_copy_2.begin(), container_l_copy_2.end());
 
 
@@ -125,9 +109,9 @@ int main()
     std::cout << "container copy: " << container_fl_copy << std::endl;
     MyForwardList<int> container_fl_copy_2 = MyForwardList<int>(container_fl);
     std::cout << "container copy 2: " << container_fl_copy_2 << std::endl;  
-    MyForwardList<int> container_fl_move = get_list_forward();
+    MyForwardList<int> container_fl_move{get_container<MyForwardList>()};
+    std::cout << "container move constructor: " << container_fl_move << std::endl;
+    container_fl_move = std::move( get_container<MyForwardList>() ); 
     std::cout << "container move assignment: " << container_fl_move << std::endl;  
-    MyForwardList<int> container_fl_move_constr{get_list_forward()};
-    std::cout << "container move constructor: " << container_fl_move_constr << std::endl;
     TestContainerIterator(container_fl_copy_2.begin(), container_fl_copy_2.end());
 }

@@ -31,10 +31,10 @@ public:
 
     MyList& operator=( const MyList& rhs )
     {
-        if( this != rhs )
+        if( this != &rhs )
         {
             MyList temp{rhs};
-            *this = temp;
+            swap( temp );
         }
         return *this;
     }
@@ -49,7 +49,7 @@ public:
     {
         while( _size )
         {
-            erase( --_size );
+            erase( _size - 1 );
         }
     }
 
@@ -104,8 +104,9 @@ public:
         
         Node* idx_node = get_node( idx );
         if( idx == 0 )
-        {            
-            idx_node->next->prev = nullptr;
+        {   
+            if( idx_node->next )
+                idx_node->next->prev = nullptr;
         }
         else if( idx == ( _size - 1 ) )
         {
@@ -199,6 +200,19 @@ private:
     {
         _node_last = nullptr;
         _size = 0;
+    }
+
+    void swap( MyList::Node& lhs, MyList::Node& rhs ) noexcept
+    {
+        std::swap( lhs.data, rhs.data );
+        std::swap( lhs.next, rhs.next );
+        std::swap( lhs.prev, rhs.prev );
+    }
+
+    void swap( MyList& other ) noexcept
+    {
+        std::swap( _size, other._size );
+        swap( *_node_last, *other._node_last );
     }
 };
 

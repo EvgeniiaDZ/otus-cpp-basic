@@ -33,10 +33,10 @@ public:
 
     MyForwardList& operator=( const MyForwardList& rhs )
     {
-        if( this != rhs )
+        if( this != &rhs )
         {
             MyForwardList temp{rhs};
-            *this = temp;
+            swap( temp );
         }
         return *this;
     }
@@ -114,7 +114,8 @@ public:
         else if( idx == 0 )
         {
             Node* node = _node_first;
-            _node_first = _node_first->next;
+            if( _node_first->next )
+                _node_first = _node_first->next;
             delete [] node;
         }
         else if( idx == _size - 1 )
@@ -204,4 +205,16 @@ private:
         return ret;
     }
 
+    void swap( MyForwardList::Node& lhs, MyForwardList::Node& rhs ) noexcept
+    {
+        std::swap( lhs.data, rhs.data );
+        std::swap( lhs.next, rhs.next );
+    }
+
+    void swap( MyForwardList& other ) noexcept
+    {
+        std::swap( _node_first, other._node_first );
+        std::swap( _node_last, other._node_last );
+        std::swap( _size, other._size );
+    }
 };

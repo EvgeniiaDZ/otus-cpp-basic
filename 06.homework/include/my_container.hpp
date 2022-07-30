@@ -48,10 +48,10 @@ public:
 
     MyContainer& operator=( const MyContainer& rhs )
     {
-        if( this != rhs )
+        if( this != &rhs )
         {
             MyContainer temp{rhs};
-            *this = temp;
+            swap( temp );
         }
         return *this;
     }
@@ -177,6 +177,15 @@ public:
     }
 
 private:
+
+    void swap( MyContainer& other ) noexcept
+    {
+        std::swap( _data, other._data );
+        std::swap( _size, other._size );
+        std::swap( _size_coef, other._size_coef );
+        std::swap( _capacity, other._capacity );
+    }
+    
     T* _data;
     int _size;
     float _size_coef;
