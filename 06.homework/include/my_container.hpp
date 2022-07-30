@@ -72,6 +72,8 @@ public:
         if( _size >= _capacity )
         {
             _capacity = static_cast<int>( ceil( ( _size == 0 ) ? ( 1 ) : ( _size * _size_coef ) ) );
+            if( _capacity == _size )
+                ++_capacity;
             T* temp = new T[_capacity];
             for( int i = 0; i < _size; i++ ) 
             {
@@ -92,7 +94,7 @@ public:
         }
         if( _size < _capacity )
         {
-            for( int i = idx + 1; i < _size; i++ )
+            for( int i = _size; i > idx; --i )
             {
                 _data[i] = _data[i - 1];
             }
@@ -185,7 +187,7 @@ private:
         std::swap( _size_coef, other._size_coef );
         std::swap( _capacity, other._capacity );
     }
-    
+
     T* _data;
     int _size;
     float _size_coef;
