@@ -29,14 +29,15 @@ public:
         T data;
     };
 
-    class Iterator 
+    class Iterator : public std::iterator<std::input_iterator_tag, T> 
     {
     public:
-        Iterator() noexcept;
         Iterator( struct Node* node ) noexcept;
-
+        Iterator( const Iterator& other ) noexcept;
         Iterator& operator++();
+        Iterator operator++( int );
         bool operator!= ( const Iterator& iterator ) const;
+        bool operator== ( const Iterator& iterator ) const;
         T& operator*();
     private:
         struct Node* _node;
@@ -262,16 +263,16 @@ void MyList<T>::swap( MyList<T>& other ) noexcept
 
     
 template <typename T>
-MyList<T>::Iterator::Iterator() noexcept
-    : _node( nullptr ) 
+MyList<T>::Iterator::Iterator( struct Node* node ) noexcept
+    : _node( node ) 
 {
 
 }
 
 
 template <typename T>
-MyList<T>::Iterator::Iterator( struct Node* node ) noexcept
-    : _node( node ) 
+MyList<T>::Iterator::Iterator( const Iterator& other ) noexcept
+    : _node( other._node )
 {
 
 }
@@ -286,9 +287,25 @@ typename MyList<T>::Iterator& MyList<T>::Iterator::operator++()
 
 
 template <typename T>
+typename MyList<T>::Iterator MyList<T>::Iterator::operator++( int )
+{
+    MyList<T>::Iterator temp( *this );
+    operator++();
+    return temp;
+}
+
+
+template <typename T>
 bool MyList<T>::Iterator::operator!= ( const MyList<T>::Iterator& iterator ) const
 {
     return _node != iterator._node;
+}
+
+
+template <typename T>
+bool MyList<T>::Iterator::operator== ( const MyList<T>::Iterator& iterator ) const 
+{
+    return _node == iterator._node;
 }
 
 

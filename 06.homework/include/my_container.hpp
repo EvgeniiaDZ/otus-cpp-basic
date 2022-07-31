@@ -2,6 +2,7 @@
 
 #include "icontainer.hpp"
 #include <utility>
+#include <iterator>
 #include "cmath"
 
 template <typename T>
@@ -23,12 +24,14 @@ public:
     int size() const override;
     const T& operator[]( const int& idx ) const  override;
 
-    class Iterator {
+    class Iterator : public std::iterator<std::input_iterator_tag, T>
+    {
     public: 
-        Iterator() noexcept;
         Iterator( T* itr_ptr ) noexcept; 
-
+        Iterator( const Iterator& other ) noexcept;
         Iterator& operator++(); 
+        Iterator operator++( int );
+        bool operator==( const Iterator& iterator ) const;
         bool operator!=( const Iterator& iterator ) const;
         T& operator*();
     private:
@@ -235,10 +238,10 @@ void MyContainer<T>::swap( MyContainer<T>& other ) noexcept
 
 
 template <typename T>
-MyContainer<T>::Iterator::Iterator() noexcept
-    :_itr_ptr{ nullptr} 
-{ 
-     
+MyContainer<T>::Iterator::Iterator( const Iterator& other ) noexcept
+    :_itr_ptr{ other._itr_ptr }
+{
+    
 }
 
 
@@ -259,9 +262,25 @@ typename MyContainer<T>::Iterator& MyContainer<T>::Iterator::operator++()
 
 
 template <typename T>
+typename MyContainer<T>::Iterator MyContainer<T>::Iterator::operator++( int )
+{
+    MyContainer<T>::Iterator temp( *this );
+    operator++();
+    return temp;
+}
+
+
+template <typename T>
 bool MyContainer<T>::Iterator::operator!=( const MyContainer<T>::Iterator& iterator ) const
 {
     return _itr_ptr != iterator._itr_ptr;
+}
+
+
+template <typename T>
+bool MyContainer<T>::Iterator::operator==( const MyContainer<T>::Iterator& iterator ) const
+{
+    return _itr_ptr == iterator._itr_ptr;
 }
 
 

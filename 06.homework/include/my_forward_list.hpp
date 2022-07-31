@@ -27,16 +27,16 @@ public:
         T data;
     };
 
-    class Iterator
+    class Iterator : public std::iterator<std::input_iterator_tag, T>
     {
     public:
-        Iterator() noexcept;
         Iterator( struct Node* node ) noexcept;
-
+        Iterator( const Iterator& other ) noexcept;
+        Iterator operator++( int );
         Iterator& operator++();
-        bool operator!= ( const Iterator& iterator ) const;
+        bool operator==( const Iterator& iterator ) const;
+        bool operator!=( const Iterator& iterator ) const;
         T& operator*();
-
     private:
         struct Node* _node;
     };
@@ -267,8 +267,8 @@ void MyForwardList<T>::swap( MyForwardList<T>& other ) noexcept
 }
 
 template <typename T>
-MyForwardList<T>::Iterator::Iterator() noexcept
-    : _node( nullptr ) 
+MyForwardList<T>::Iterator::Iterator( const Iterator& other ) noexcept
+    : _node( other._node ) 
 {
 
 }
@@ -291,11 +291,26 @@ typename MyForwardList<T>::Iterator& MyForwardList<T>::Iterator::operator++()
 
 
 template <typename T>
+typename MyForwardList<T>::Iterator MyForwardList<T>::Iterator::operator++( int )
+{
+    MyForwardList<T>::Iterator temp( *this );
+    operator++();
+    return temp;
+}
+
+
+template <typename T>
 bool MyForwardList<T>::Iterator::operator!= ( const MyForwardList<T>::Iterator& iterator ) const
 {
     return _node != iterator._node;
 }
 
+
+template <typename T>
+bool MyForwardList<T>::Iterator::operator== ( const MyForwardList<T>::Iterator& iterator ) const 
+{
+    return _node == iterator._node;
+}
 
 template <typename T>
 T& MyForwardList<T>::Iterator::operator*()
