@@ -2,6 +2,7 @@
 
 #include "icontainer.hpp"
 #include <utility>
+#include <iterator>
 
 template <typename T>
 class MyForwardList : public IContainer<T>
@@ -51,7 +52,6 @@ private:
 
     void init_value( void );
     Node* get_node( int idx ) const;
-    void swap( MyForwardList::Node& lhs, MyForwardList::Node& rhs ) noexcept;
     void swap( MyForwardList& other ) noexcept;
 };
 
@@ -225,7 +225,7 @@ typename MyForwardList<T>::Iterator MyForwardList<T>::begin()
 template <typename T>
 typename MyForwardList<T>::Iterator MyForwardList<T>::end()
 {
-    return MyForwardList<T>::Iterator( _node_last );
+    return MyForwardList<T>::Iterator( nullptr );
 }
 
 
@@ -247,14 +247,6 @@ typename MyForwardList<T>::Node* MyForwardList<T>::get_node( int idx ) const
         ret = ret->next;
     }
     return ret;
-}
-
-
-template <typename T>
-void MyForwardList<T>::swap( MyForwardList<T>::Node& lhs, MyForwardList<T>::Node& rhs ) noexcept
-{
-    std::swap( lhs.data, rhs.data );
-    std::swap( lhs.next, rhs.next );
 }
 
 
