@@ -2,6 +2,7 @@
 
 #include "icontainer.hpp"
 #include <utility>
+#include <iterator>
 
 template <typename T>
 class MyList : public IContainer<T> 
@@ -29,7 +30,7 @@ public:
         T data;
     };
 
-    class Iterator : public std::iterator<std::input_iterator_tag, T> 
+    class Iterator : public std::iterator<std::input_iterator_tag, T>
     {
     public:
         Iterator( struct Node* node ) noexcept;
@@ -52,8 +53,6 @@ private:
 
     Node* get_node( int idx ) const;
     void init_value( void );
-
-    void swap( MyList::Node& lhs, MyList::Node& rhs ) noexcept;
     void swap( MyList& other ) noexcept;
 };
 
@@ -155,6 +154,8 @@ int MyList<T>::insert( const int& idx, const T& val )
         new_node->prev = idx_node->prev;
         new_node->next = idx_node;
         new_node->data = val;
+        if( idx_node->prev )
+            idx_node->prev->next = new_node;
         idx_node->prev = new_node;        
     }
     ++_size;
@@ -216,7 +217,7 @@ typename MyList<T>::Iterator MyList<T>::begin()
 template <typename T>
 typename MyList<T>::Iterator MyList<T>::end()
 {
-    return MyList<T>::Iterator( _node_last );
+    return MyList<T>::Iterator( nullptr );
 }
 
 
@@ -246,19 +247,10 @@ void MyList<T>::init_value( void )
 
 
 template <typename T>
-void MyList<T>::swap( MyList<T>::Node& lhs, MyList<T>::Node& rhs ) noexcept
-{
-    std::swap( lhs.data, rhs.data );
-    std::swap( lhs.next, rhs.next );
-    std::swap( lhs.prev, rhs.prev );
-}
-
-
-template <typename T>
 void MyList<T>::swap( MyList<T>& other ) noexcept
 {
     std::swap( _size, other._size );
-    swap( *_node_last, *other._node_last );
+    std::swap( _node_last, other._node_last );
 }   
 
     
