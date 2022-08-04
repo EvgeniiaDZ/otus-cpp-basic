@@ -13,8 +13,9 @@ target_include_directories(container PRIVATE include)
 add_executable(
     test_container
     test/test_container.cpp
-    test/vector_tests
-    test/list_tests
+    test/vector_tests.cpp
+    test/list_tests.cpp
+    test/forward_list_tests.cpp
 )
 
 target_include_directories(
@@ -61,4 +62,4 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     )
 endif()
 
-target_compile_features(container PUBLIC cxx_std_17)
+# target_compile_features(container PUBLIC cxx_std_17)
