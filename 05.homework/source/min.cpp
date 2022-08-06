@@ -10,7 +10,7 @@ void Min::update(double next) {
     }
 }
 
-double Min::eval() const {
+double Min::eval() {
     return m_min;
 }
 

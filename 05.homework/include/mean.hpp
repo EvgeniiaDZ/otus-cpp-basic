@@ -6,7 +6,7 @@ class Mean : public IStatistics {
 public:
 	Mean();
 	void update(double next) override;
-	double eval() const override;
+	double eval() override;
 	const char* name() const override;
     
 private:

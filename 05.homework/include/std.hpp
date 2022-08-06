@@ -7,12 +7,12 @@ class Std : public IStatistics {
 public:
 	Std();
 	void update(double next) override;
-	double eval() const override;
+	double eval() override;
 	const char* name() const override;
 
 private:
 	double _std;
 	std::vector<double> _val;
 
-	double mean();
+	double mean() const;
 };

@@ -12,7 +12,7 @@ void Mean::update(double next) {
     _mean = _sum / _count;
 }
 
-double Mean::eval() const {
+double Mean::eval() {
     return _mean;
 }
 

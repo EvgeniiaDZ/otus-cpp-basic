@@ -6,7 +6,7 @@ class Min : public IStatistics {
 public:
 	Min();
 	void update(double next) override;
-	double eval() const override;
+	double eval() override;
 	const char* name() const override;
 
 private:

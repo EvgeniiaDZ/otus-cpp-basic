@@ -12,7 +12,7 @@ void Max::update(double next) {
     }
 }
 
-double Max::eval() const {
+double Max::eval() {
     return _max;
 }
 
