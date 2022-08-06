@@ -25,5 +25,5 @@ double Std::mean() {
     for (int value: _val) {
         sum += value ;
     }
-    return sum / _val.size();
+    return (_val.size() == 0) ? (0) : (sum / _val.size());
 }
