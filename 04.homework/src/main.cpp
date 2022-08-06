@@ -17,6 +17,7 @@ int main() {
         if (ast) {
             ast->print(std::cout);
         }
+        delete ast;
     }
     catch(const char *error) {
         std::cout << "Error :" << error << std::endl;
