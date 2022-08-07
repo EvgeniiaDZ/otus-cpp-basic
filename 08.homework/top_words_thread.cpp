@@ -31,20 +31,20 @@ int main(int argc, char *argv[]) {
     auto start = std::chrono::high_resolution_clock::now();
 
     std::vector<std::thread> thrs;
-    int size = argc - 1;
-    std::vector<std::ifstream> input(size);
+    int size = (argc - 1);
+    std::vector<std::ifstream> input;
     std::vector<Counter> freq_dict(size);
     
     for (int i = 1; i < argc; ++i) {
-        input[i - 1].open(argv[i]);
+        input.emplace_back(argv[i]);
         if (!input[i - 1].is_open()) {
             std::cerr << "Failed to open file " << argv[i] << '\n';
-            for (auto &thr_item : thrs) {
-                thr_item.join();
-            }
             return EXIT_FAILURE;
         }
-        thrs.emplace_back(count_words, std::ref(input[i - 1]), std::ref(freq_dict[i - 1]));
+    }
+
+    for (int i = 0; i < size; ++i) {
+        thrs.emplace_back(count_words, std::ref(input[i]), std::ref(freq_dict[i]));
     }
 
     for (auto &thr_item : thrs) {
